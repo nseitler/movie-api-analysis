@@ -31,6 +31,9 @@ def process_movie_data(movie):
         runtime = int(movie.get('Runtime', '0').split(' ')[0])  # '120 min' -> 120
         genre = movie.get('Genre', 'N/A')
         awards = movie.get('Awards', 'N/A')
+        rated = movie.get('Rated', 'N/A')
+        director = movie.get('Director', 'N/A')
+        released = movie.get('Released', 'N/A')
         
         # Extracting wins and nominations from the awards string
         wins = sum(map(int, re.findall(r'(\d+) win', awards)))
@@ -39,14 +42,14 @@ def process_movie_data(movie):
         # Box office value conversion to integer (e.g., '$123,456,789' -> 123456789)
         box_office = int(movie.get('BoxOffice', '$0').replace('$', '').replace(',', ''))
 
-        return [title, runtime, genre, wins, nominations, box_office]
+        return [title, runtime, genre, wins, nominations, box_office, rated, director, released]
     except ValueError:
         # Handles cases where data conversion is not possible
         print(f"Error processing movie: {movie.get('Title', 'Unknown')}")
         return None
 
 def save_to_csv(movie_data, output_file='movies.csv'):
-    headers = ['Movie Title', 'Runtime', 'Genre', 'Award Wins', 'Award Nominations', 'Box Office']
+    headers = ['Movie Title', 'Runtime', 'Genre', 'Award Wins', 'Award Nominations', 'Box Office', 'Rated', 'Director', 'Released']
 
     with open(output_file, mode='w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
